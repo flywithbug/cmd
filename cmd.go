@@ -2,14 +2,15 @@ package cmd
 
 import (
 	"bufio"
+	"errors"
 	"io"
-	"path"
-	"github.com/flywithbug/file"
 	"os"
 	"os/exec"
+	"path"
 	"regexp"
 	"strings"
-	"errors"
+
+	"github.com/flywithbug/file"
 )
 
 func Cmd(cmd string) *exec.Cmd {
