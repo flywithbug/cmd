@@ -14,7 +14,7 @@ import (
 )
 
 func Cmd(cmd string) *exec.Cmd {
-	//多余空格替换成一个
+	// 多余空格替换成一个
 	cmd = regexp.MustCompile(`\s{2,}`).ReplaceAllString(cmd, " ")
 	args := strings.Split(cmd, " ")
 	mainCommond := args[0]
