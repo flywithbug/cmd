@@ -109,7 +109,7 @@ func Commit(note string) cmd.Status {
 
 func Tag(tag, note string) cmd.Status {
 	// Create Cmd, buffered output
-	envCmd := cmd.NewCmd("/bin/bash", "-c", fmt.Sprintf("git tag -a '%s' -m '%s' ", tag, note))
+	envCmd := cmd.NewCmd("/bin/bash", "-c", fmt.Sprintf("git tag %s", tag))
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()
 	return status
