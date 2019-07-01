@@ -3,8 +3,6 @@ package git
 import (
 	"fmt"
 
-	"strings"
-
 	"github.com/flywithbug/cmd"
 )
 
@@ -90,21 +88,20 @@ func Status() cmd.Status {
 	return status
 }
 
-func Add(args ...string) cmd.Status {
-	addS := "."
-	if len(args) != 0 {
-		addS = strings.Join(args, " ")
-	}
+func Add() cmd.Status {
 	// Create Cmd, buffered output
-	envCmd := cmd.NewCmd("/bin/bash", "-c", "git add "+addS)
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git add -A")
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()
 	return status
 }
 
 func Commit(note string) cmd.Status {
+	if note == "" {
+		note = "m"
+	}
 	// Create Cmd, buffered output
-	envCmd := cmd.NewCmd("/bin/bash", "-c", "git commit -m "+note)
+	envCmd := cmd.NewCmd("/bin/bash", "-c", fmt.Sprintf("git commit -m '%s'", note))
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()
 	return status
@@ -112,7 +109,7 @@ func Commit(note string) cmd.Status {
 
 func Tag(tag, note string) cmd.Status {
 	// Create Cmd, buffered output
-	envCmd := cmd.NewCmd("/bin/bash", "-c", fmt.Sprintf("git tag -a '%s' -m '%s' "+tag, note))
+	envCmd := cmd.NewCmd("/bin/bash", "-c", fmt.Sprintf("git tag -a '%s' -m '%s' ", tag, note))
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()
 	return status
