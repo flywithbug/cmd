@@ -3,8 +3,19 @@ package git
 import (
 	"fmt"
 
+	"strings"
+
 	"github.com/flywithbug/cmd"
 )
+
+func Init(path string) cmd.Status {
+	// Create Cmd, buffered output
+
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git init "+path)
+	// Run and wait for Cmd to return Status
+	status := <-envCmd.Start()
+	return status
+}
 
 func Clone(url, name string) cmd.Status {
 	// Create Cmd, buffered output
@@ -40,16 +51,51 @@ func PushF() cmd.Status {
 
 func Branch(branch string) cmd.Status {
 	// Create Cmd, buffered output
-	envCmd := cmd.NewCmd("/bin/bash", "-c", "git branch ", branch)
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git branch "+branch)
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()
 	return status
 }
 
-func Init(path string) cmd.Status {
+func DelBranch(branch string) cmd.Status {
 	// Create Cmd, buffered output
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git branch -d "+branch)
+	// Run and wait for Cmd to return Status
+	status := <-envCmd.Start()
+	return status
+}
 
-	envCmd := cmd.NewCmd("/bin/bash", "-c", "git init ", path)
+func CheckOut(branch string) cmd.Status {
+	// Create Cmd, buffered output
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git checkout "+branch)
+	// Run and wait for Cmd to return Status
+	status := <-envCmd.Start()
+	return status
+}
+
+func Status() cmd.Status {
+	// Create Cmd, buffered output
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git status -s")
+	// Run and wait for Cmd to return Status
+	status := <-envCmd.Start()
+	return status
+}
+
+func Add(args ...string) cmd.Status {
+	addS := "."
+	if len(args) != 0 {
+		addS = strings.Join(args, " ")
+	}
+	// Create Cmd, buffered output
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git add "+addS)
+	// Run and wait for Cmd to return Status
+	status := <-envCmd.Start()
+	return status
+}
+
+func Commit(note string) cmd.Status {
+	// Create Cmd, buffered output
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git commit -m "+note)
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()
 	return status
