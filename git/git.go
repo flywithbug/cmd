@@ -1,10 +1,14 @@
 package git
 
-import "github.com/flywithbug/cmd"
+import (
+	"fmt"
 
-func Clone(url string) cmd.Status {
+	"github.com/flywithbug/cmd"
+)
+
+func Clone(url, name string) cmd.Status {
 	// Create Cmd, buffered output
-	envCmd := cmd.NewCmd("/bin/bash", "-c", "git clone "+url)
+	envCmd := cmd.NewCmd("/bin/bash", "-c", fmt.Sprintf("git clone %s %s", url, name))
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()
 	return status
@@ -34,8 +38,17 @@ func PushF() cmd.Status {
 	return status
 }
 
+func Branch(branch string) cmd.Status {
+	// Create Cmd, buffered output
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git branch ", branch)
+	// Run and wait for Cmd to return Status
+	status := <-envCmd.Start()
+	return status
+}
+
 func Init(path string) cmd.Status {
 	// Create Cmd, buffered output
+
 	envCmd := cmd.NewCmd("/bin/bash", "-c", "git init ", path)
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()

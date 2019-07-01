@@ -44,6 +44,7 @@ package cmd
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -104,6 +105,14 @@ type Status struct {
 	Runtime  float64  // seconds, zero if Cmd not started
 	Stdout   []string // buffered STDOUT; see Cmd.Status for more info
 	Stderr   []string // buffered STDERR; see Cmd.Status for more info
+}
+
+func (s Status) ToJson() string {
+	jb, err := json.Marshal(s)
+	if err != nil {
+		return ""
+	}
+	return string(jb)
 }
 
 // NewCmd creates a new Cmd for the given command name and arguments. The command
