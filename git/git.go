@@ -43,7 +43,7 @@ func Push() cmd.Status {
 
 func PushOrigin(branch string) cmd.Status {
 	// Create Cmd, buffered output
-	envCmd := cmd.NewCmd("/bin/bash", "-c", "git push -u origin/"+branch)
+	envCmd := cmd.NewCmd("/bin/bash", "-c", fmt.Sprintf("git push origin %s", branch))
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()
 	return status
@@ -110,9 +110,9 @@ func Commit(note string) cmd.Status {
 	return status
 }
 
-func Tag(tag string) cmd.Status {
+func Tag(tag, note string) cmd.Status {
 	// Create Cmd, buffered output
-	envCmd := cmd.NewCmd("/bin/bash", "-c", "git tag -a "+tag)
+	envCmd := cmd.NewCmd("/bin/bash", "-c", fmt.Sprintf("git tag -a '%s' -m '%s' "+tag, note))
 	// Run and wait for Cmd to return Status
 	status := <-envCmd.Start()
 	return status
