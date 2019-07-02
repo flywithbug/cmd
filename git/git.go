@@ -115,6 +115,15 @@ func Tag(tag, note string) cmd.Status {
 	return status
 }
 
+func DelTag(tag string) cmd.Status {
+	// Create Cmd, buffered output
+	envCmd := cmd.NewCmd("/bin/bash", "-c", fmt.Sprintf("git tag -d %s", tag))
+	// Run and wait for Cmd to return Status
+	status := <-envCmd.Start()
+	return status
+
+}
+
 func Tags() cmd.Status {
 	// Create Cmd, buffered output
 	envCmd := cmd.NewCmd("/bin/bash", "-c", "git tag -n")
