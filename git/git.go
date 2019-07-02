@@ -131,3 +131,11 @@ func Tags() cmd.Status {
 	status := <-envCmd.Start()
 	return status
 }
+
+func Diff() cmd.Status {
+	// Create Cmd, buffered output
+	envCmd := cmd.NewCmd("/bin/bash", "-c", "git diff")
+	// Run and wait for Cmd to return Status
+	status := <-envCmd.Start()
+	return status
+}
